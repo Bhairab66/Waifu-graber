@@ -9,3 +9,14 @@ pyrogram
 tgcrypto 
 python-dotenv
 cachetools 
+aiohttp
+apscheduler==3.6.3
+cachetools
+motor
+pymongo
+pyrate-limiter==3.1.0
+pyrogram
+python-dotenv
+python-telegram-bot==20.6
+requests
+tgcrypto

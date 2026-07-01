@@ -28,7 +28,7 @@ PHOTO_URL = Config.PHOTO_URL
 SUPPORT_CHAT = Config.SUPPORT_CHAT 
 UPDATE_CHAT = Config.UPDATE_CHAT
 BOT_USERNAME = Config.BOT_USERNAME 
-sudo_users = Config.sudo_users
+sudo_users = [Config.sudo_users] if isinstance(Config.sudo_users, str) else list(Config.sudo_users)
 OWNER_ID = Config.OWNER_ID 
 
 application = Application.builder().token(TOKEN).build()
@@ -41,3 +41,4 @@ user_collection = db["user_collection_lmaoooo"]
 group_user_totals_collection = db['group_user_totalsssssss']
 top_global_groups_collection = db['top_global_groups']
 pm_users = db['total_pm_users']
+sudo_users_collection = db['sudo_users']

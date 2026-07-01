@@ -11,7 +11,8 @@ from telegram import Update
 from telegram.ext import CommandHandler, CallbackContext, MessageHandler, filters
 
 from shivu import collection, top_global_groups_collection, group_user_totals_collection, user_collection, user_totals_collection, shivuu
-from shivu import application, SUPPORT_CHAT, UPDATE_CHAT, db, LOGGER, OWNER_ID
+import shivu
+from shivu import application, SUPPORT_CHAT, UPDATE_CHAT, db, LOGGER, OWNER_ID, sudo_users_collection
 from shivu.modules import ALL_MODULES
 
 
@@ -235,6 +236,12 @@ async def fav(update: Update, context: CallbackContext) -> None:
 
 
 async def set_commands(application) -> None:
+    db_sudo = await sudo_users_collection.find_one({"_id": "sudo_list"})
+    if db_sudo and "users" in db_sudo:
+        for uid in db_sudo["users"]:
+            if uid not in shivu.sudo_users:
+                shivu.sudo_users.append(uid)
+
     user_commands = [
         ("start", "Start the bot"),
         ("guess", "Guess the character name"),
@@ -254,6 +261,9 @@ async def set_commands(application) -> None:
         ("update", "Update a character (sudo)"),
         ("broadcast", "Broadcast a message to all (owner)"),
         ("stats", "View bot statistics (owner)"),
+        ("addgm", "Add a GM/sudo user (owner)"),
+        ("removegm", "Remove a GM/sudo user (owner)"),
+        ("listgm", "List all GMs (owner)"),
     ]
 
     from telegram import BotCommand

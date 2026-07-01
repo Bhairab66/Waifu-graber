@@ -11,7 +11,7 @@ from telegram import Update
 from telegram.ext import CommandHandler, CallbackContext, MessageHandler, filters
 
 from shivu import collection, top_global_groups_collection, group_user_totals_collection, user_collection, user_totals_collection, shivuu
-from shivu import application, SUPPORT_CHAT, UPDATE_CHAT, db, LOGGER
+from shivu import application, SUPPORT_CHAT, UPDATE_CHAT, db, LOGGER, OWNER_ID
 from shivu.modules import ALL_MODULES
 
 
@@ -234,6 +234,38 @@ async def fav(update: Update, context: CallbackContext) -> None:
 
 
 
+async def set_commands(application) -> None:
+    user_commands = [
+        ("start", "Start the bot"),
+        ("guess", "Guess the character name"),
+        ("harem", "View your character collection"),
+        ("fav", "Set a character as your favourite"),
+        ("top", "Top users leaderboard"),
+        ("ctop", "Top users in current group"),
+        ("topgroups", "Top groups leaderboard"),
+        ("trade", "Trade a character with another user"),
+        ("changetime", "Change character spawn frequency"),
+        ("ping", "Check if bot is alive"),
+    ]
+
+    sudo_commands = user_commands + [
+        ("upload", "Upload a new character (sudo)"),
+        ("delete", "Delete a character (sudo)"),
+        ("update", "Update a character (sudo)"),
+        ("broadcast", "Broadcast a message to all (owner)"),
+        ("stats", "View bot statistics (owner)"),
+    ]
+
+    from telegram import BotCommand
+    await application.bot.set_my_commands(
+        [BotCommand(cmd, desc) for cmd, desc in user_commands]
+    )
+    await application.bot.set_my_commands(
+        [BotCommand(cmd, desc) for cmd, desc in sudo_commands],
+        scope={"type": "chat", "chat_id": int(OWNER_ID)}
+    )
+
+
 def main() -> None:
     """Run bot."""
 
@@ -241,6 +273,7 @@ def main() -> None:
     application.add_handler(CommandHandler("fav", fav, block=False))
     application.add_handler(MessageHandler(filters.ALL, message_counter, block=False))
 
+    application.post_init = set_commands
     application.run_polling(drop_pending_updates=True)
     
 if __name__ == "__main__":

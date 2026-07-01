@@ -254,6 +254,7 @@ async def set_commands(application) -> None:
         ("changetime", "Change character spawn frequency"),
         ("ping", "Check if bot is alive"),
         ("claim", "Claim your free daily character"),
+        ("weekly", "Claim your weekly bonus (3 characters)"),
     ]
 
     sudo_commands = user_commands + [

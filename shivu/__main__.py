@@ -253,9 +253,11 @@ async def set_commands(application) -> None:
         ("trade", "Trade a character with another user"),
         ("changetime", "Change character spawn frequency"),
         ("ping", "Check if bot is alive"),
+        ("claim", "Claim your free daily character"),
     ]
 
     sudo_commands = user_commands + [
+        ("admin", "Open the admin panel"),
         ("upload", "Upload a new character (sudo)"),
         ("delete", "Delete a character (sudo)"),
         ("update", "Update a character (sudo)"),
